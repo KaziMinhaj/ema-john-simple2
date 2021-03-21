@@ -12,8 +12,9 @@ import NotFound from './components/NotFound/NotFound';
 import ProductDetails from './components/PorductDetails/ProductDetails';
 import Login from './components/Login/Login';
 import Shipment from './components/Shipment/Shipment';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
-export const UserContext = createContext();
+export const UserContext = createContext(); //creating a context
 
 function App() {
 
@@ -31,18 +32,18 @@ function App() {
           <Route exact path="/review">
             <OrderReview />
           </Route>
-          <Route exact path="/inventory">
+          <PrivateRoute exact path="/inventory">
             <Inventory />
-          </Route>
+          </PrivateRoute>
           <Route exact path="/">
             <Shop />
           </Route>
           <Route path="/product/:productKey" >
             <ProductDetails />
           </Route>
-          <Route path="/shipment" >
+          <PrivateRoute path="/shipment" >
             <Shipment></Shipment>
-          </Route>
+          </PrivateRoute>
           <Route path="/login" >
             <Login></Login>
           </Route>

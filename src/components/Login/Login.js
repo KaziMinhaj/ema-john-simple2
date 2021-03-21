@@ -3,6 +3,7 @@ import "firebase/auth";
 import firebaseConfig from './firebase.config';
 import { useContext, useState } from 'react';
 import { UserContext } from "../../App";
+import { useHistory, useLocation } from "react-router";
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -24,6 +25,11 @@ function Login() {
     })
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+
+    //private route
+    const history = useHistory()
+    const location = useLocation()
+    let { from } = location.state || { from: { pathname: "/" } };
 
     var googleProvider = new firebase.auth.GoogleAuthProvider();
     var fbProvider = new firebase.auth.FacebookAuthProvider();
@@ -84,6 +90,7 @@ function Login() {
                     newUserInfo.success = true;
                     setUser(newUserInfo);
                     setLoggedInUser(newUserInfo) //context api
+                    history.replace(from) // for redirection
                     console.log('sign in user info', response.user);
 
                 })
