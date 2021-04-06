@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 
 const Product = (props) => {
+    document.title = 'Products'
     const { name, img, seller, price, stock, key } = props.product
     return (
         <div className="product">

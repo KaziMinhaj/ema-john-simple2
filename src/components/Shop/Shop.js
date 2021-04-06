@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import fakeData from '../../fakeData';
-import Product from '../Product/Product';
-import Cart from '../Cart/Cart'
-import './Shop.css'
 import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseManager';
-import { Link } from 'react-router-dom'
+import Cart from '../Cart/Cart';
+import Product from '../Product/Product';
+import './Shop.css';
 
 const Shop = () => {
-    const first10 = fakeData.slice(0, 10);
-    const [products, setProducts] = useState(first10);
+    // document.title = 'Shop'
+    // const first10 = fakeData.slice(0, 10);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
 
+        useEffect(()=>{
+            fetch('http://localhost:5000/products')
+            .then(res=>res.json())
+            .then(data => setProducts(data))
+        },[])
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
@@ -43,6 +49,9 @@ const Shop = () => {
     return (
         <div className="shop-container">
             <div className="product-container">
+                {
+                    products.legth === 0 && <p>loading...</p>
+                }
                 {products.map(product =>
                     <Product
                         showAddToCart={true}
