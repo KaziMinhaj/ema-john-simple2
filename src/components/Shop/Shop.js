@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import fakeData from '../../fakeData';
 import { addToDatabaseCart, getDatabaseCart } from '../../utilities/databaseManager';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
@@ -17,16 +16,31 @@ const Shop = () => {
             .then(res=>res.json())
             .then(data => setProducts(data))
         },[])
+        
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        const previousCart = productKeys.map((existingKey) => {
-            const product = fakeData.find(pd => pd.key === existingKey);
-            product.quantity = savedCart[existingKey];
-            return product
-        });
-        setCart(previousCart)
-    }, [])
+        
+        // if(products.length>0){
+        //     const previousCart = productKeys.map((existingKey) => {
+        //         const product = products.find(pd => pd.key === existingKey);
+        //         product.quantity = savedCart[existingKey];
+        //         return product
+        //     });
+        //     setCart(previousCart)
+        // }
+       
+        fetch('http://localhost:5000/productsByKeys',{
+            method:'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(productKeys)
+        })
+        .then(res=>res.json())
+        .then(data => setCart(data))
+        
+    }, [products])
 
     const handleAddProduct = (product) => {
         const toBeAddedKey = product.key;
