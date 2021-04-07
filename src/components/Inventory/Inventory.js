@@ -2,7 +2,7 @@ import React from 'react';
 const Inventory = () => {
     const handleAddProducts=()=>{
         const product = {}
-        fetch('http://localhost:5000/addProduct',{
+        fetch('https://whispering-spire-57909.herokuapp.com/addProduct',{
             method:"POST",
             headers: {
                 'Content-Type' : 'application/json'
