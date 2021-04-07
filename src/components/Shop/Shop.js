@@ -12,7 +12,7 @@ const Shop = () => {
     const [cart, setCart] = useState([]);
 
         useEffect(()=>{
-            fetch('https://whispering-spire-57909.herokuapp.comproducts')
+            fetch('https://whispering-spire-57909.herokuapp.com/products')
             .then(res=>res.json())
             .then(data => setProducts(data))
         },[])
