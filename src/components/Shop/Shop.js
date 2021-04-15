@@ -59,7 +59,12 @@ const Shop = () => {
   return (
     <div className="shop-container">
       <div className="product-container">
-        <input type="text" className="product-search" onChange={handleSearch} />
+        <input
+          type="text"
+          className="product-search"
+          onChange={handleSearch}
+          placeholder="search product"
+        />
         {products.legth === 0 && <p>loading...</p>}
         {products.map((product) => (
           <Product
