@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { UserContext } from "../../App";
 import { getDatabaseCart, processOrder } from "../../utilities/databaseManager";
@@ -7,13 +7,19 @@ import "./shipment.css";
 
 const Shipment = () => {
   const { register, handleSubmit, watch, errors } = useForm();
+  const [shippingData, setShippingData] = useState(null);
   const onSubmit = (data) => {
+    setShippingData(data);
+  };
+
+  const handlePaymentSuccess = (paymentId) => {
     const savedCart = getDatabaseCart();
     const orderDetails = {
       ...loggedInUser,
       products: savedCart,
-      shipment: data,
+      shipment: shippingData,
       orderTime: new Date(),
+      paymentId: paymentId,
     };
     fetch("https://whispering-spire-57909.herokuapp.com/addOrder", {
       method: "POST",
@@ -30,13 +36,14 @@ const Shipment = () => {
         }
       });
   };
-  console.log(watch("example")); // watch input value by passing the name of it
-
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
   return (
     <div className="row">
-      <div className="col-md-6">
+      <div
+        style={{ display: shippingData ? "none" : "block" }}
+        className="col-md-6"
+      >
         <form className="ship-form" onSubmit={handleSubmit(onSubmit)}>
           <input
             defaultValue={loggedInUser.name}
@@ -71,8 +78,11 @@ const Shipment = () => {
           <input type="submit" />
         </form>
       </div>
-      <div className="col-md-6">
-        <ProcessPayment></ProcessPayment>
+      <div
+        style={{ display: shippingData ? "block" : "none", margin: "40px" }}
+        className="col-md-6"
+      >
+        <ProcessPayment handlePayment={handlePaymentSuccess}></ProcessPayment>
       </div>
     </div>
   );
